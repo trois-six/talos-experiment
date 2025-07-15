@@ -56,9 +56,6 @@ $ talosctl gen secrets -o secrets.yaml
 $ talosctl gen config --with-secrets secrets.yaml myKluster https://192.168.x.x:6443
 ```
 
-Network interface: enp1s0f1
-Hardrive model: TOSHIBA MQ01ABF0
-
 Modify the configuration, starting with network configuration, using the previously identified network interface:
 ```yaml
 machine:
