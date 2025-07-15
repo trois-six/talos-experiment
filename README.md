@@ -79,7 +79,7 @@ machine:
         model: TOSHIBA MQ01ABF0
 ```
 
-We allow to schedule pods on the master nodes
+If we allow to schedule pods on the master nodes
 ```yaml
 machine:
   # nodeLabels:
@@ -160,7 +160,6 @@ $ helm install \
     --set=gatewayAPI.enabled=true \
     --set=gatewayAPI.enableAlpn=true \
     --set=gatewayAPI.enableAppProtocol=true
-$ kubectl patch deployment -n cilium cilium-operator --patch '{"spec": {"replicas": 1}}'
 ```
 
 ## Install MetalLB
