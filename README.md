@@ -193,7 +193,7 @@ metadata:
 ```
 
 ```sh
-$ k apply -f metallb.yaml
+$ kubectl apply -f metallb.yaml
 ```
 
 ## Eventually reduce the number of coredns pods to 1
