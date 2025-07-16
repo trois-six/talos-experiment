@@ -610,6 +610,63 @@ to expose the RDP port, we can also use the command:
 $ virtctl expose vmi -n vm win10 --port=3389 --name=win10 --type=LoadBalancer
 ```
 
+# Cert Manager
+
+```sh
+$ helm repo add jetstack https://charts.jetstack.io --force-update
+$ helm install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version v1.18.2 --set crds.enabled=true
+```
+
+# Intel GPU
+
+## Tag node to state that there is a GPU (instead of using NFD that does it dynamically)
+
+```sh
+$ kubectl label nodes worker intel.feature.node.kubernetes.io/gpu=true
+```
+
+## Intel operator
+
+```sh
+$ helm repo add intel https://intel.github.io/helm-charts/ --force-update
+$ helm show values intel/intel-device-plugins-operator > device-plugin-operator_values.yaml
+```
+
+Modify values.yaml to enable `gpu: true`
+
+```sh
+$ kubectl create namespace device-plugin-operator
+$ kubectl label namespace device-plugin-operator pod-security.kubernetes.io/enforce=privileged
+$ helm install device-plugin-operator intel/intel-device-plugins-operator --values device-plugin-operator_values.yaml -n device-plugin-operator
+```
+
+Now configure the operator:
+```sh
+$ curl -L https://raw.githubusercontent.com/intel/intel-device-plugins-for-kubernetes/main/deployments/operator/samples/deviceplugin_v1_gpudeviceplugin.yaml -o device-plugin_gpu-cr.yaml
+```
+
+Set the version to 0.32.1, because the operator is using this instead of 0.32.0, then apply the CR:
+
+```sh
+$ kubectl apply -f device-plugin_gpu-cr.yaml
+```
+
+You should see one gpu device desired and one ready:
+```sh
+$ kubectl get GpuDevicePlugin
+NAME              DESIRED   READY   NODE SELECTOR                                     AGE
+gpudeviceplugin   1         1       {"intel.feature.node.kubernetes.io/gpu":"true"}   10h
+```
+
+Now we can use the device in a deployment or whatever with
+```yaml
+resources:
+    requests:
+        gpu.intel.com/i915: "1"
+    limits:
+        gpu.intel.com/i915: "1"
+```
+
 # Talos debug
 
 ## Launch a DaemonSet on each node to get a real linux, and be able to troubleshoot:
