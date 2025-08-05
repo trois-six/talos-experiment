@@ -18,14 +18,14 @@ customization:
       - siderolabs/intel-ucode
 ```
 
-Copy the URL of the initial installation media (https://factory.talos.dev/image/3443c1e327301535433b31c61d71a4cbb14d8b90c05fac977bf064d98ce331a7/v1.10.5/metal-amd64-secureboot.iso) and the name of the Initial Installation image: `factory.talos.dev/metal-installer-secureboot/3443c1e327301535433b31c61d71a4cbb14d8b90c05fac977bf064d98ce331a7:v1.10.5`.
+Copy the URL of the initial installation media (https://factory.talos.dev/image/3443c1e327301535433b31c61d71a4cbb14d8b90c05fac977bf064d98ce331a7/v1.10.6/metal-amd64-secureboot.iso) and the name of the Initial Installation image: `factory.talos.dev/metal-installer-secureboot/3443c1e327301535433b31c61d71a4cbb14d8b90c05fac977bf064d98ce331a7:v1.10.6`.
 
 ## Burn initial installation media on usb
 
 On your personal computer, download the ISO and burn it on a usb key to prepare the installation.
 
 ```sh
-$ curl -qs https://factory.talos.dev/image/3443c1e327301535433b31c61d71a4cbb14d8b90c05fac977bf064d98ce331a7/v1.10.5/metal-amd64-secureboot.iso -o metal-amd64-secureboot.iso
+$ curl -qs https://factory.talos.dev/image/3443c1e327301535433b31c61d71a4cbb14d8b90c05fac977bf064d98ce331a7/v1.10.6/metal-amd64-secureboot.iso -o metal-amd64-secureboot.iso
 $ dd if=metal-amd64-secureboot.iso of=/dev/sdxxxx #(usb key)
 ```
 
@@ -74,7 +74,7 @@ The install part, we use the previous identified installer image and hardrive mo
 ```yaml
 machine:
   install:
-    image: factory.talos.dev/metal-installer-secureboot/3443c1e327301535433b31c61d71a4cbb14d8b90c05fac977bf064d98ce331a7:v1.10.5
+    image: factory.talos.dev/metal-installer-secureboot/3443c1e327301535433b31c61d71a4cbb14d8b90c05fac977bf064d98ce331a7:v1.10.6
       diskSelector:
         model: TOSHIBA MQ01ABF0
 ```
@@ -147,7 +147,7 @@ $ helm repo add cilium https://helm.cilium.io/
 $ helm install \
     cilium \
     cilium/cilium \
-    --version 1.17.5 \
+    --version 1.18.0 \
     --namespace cilium \
     --set ipam.mode=kubernetes \
     --set kubeProxyReplacement=true \
@@ -231,7 +231,7 @@ Create the following manifest in the file `kustomization.yaml`:
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-- github.com/rancher/local-path-provisioner/deploy?ref=v0.0.31
+- github.com/rancher/local-path-provisioner/deploy?ref=v0.0.32
 patches:
 - patch: |-
     kind: ConfigMap
@@ -645,7 +645,7 @@ Now configure the operator:
 $ curl -L https://raw.githubusercontent.com/intel/intel-device-plugins-for-kubernetes/main/deployments/operator/samples/deviceplugin_v1_gpudeviceplugin.yaml -o device-plugin_gpu-cr.yaml
 ```
 
-Set the version to 0.32.1, because the operator is using this instead of 0.32.0, then apply the CR:
+Apply the CR:
 
 ```sh
 $ kubectl apply -f device-plugin_gpu-cr.yaml
