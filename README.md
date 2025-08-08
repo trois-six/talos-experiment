@@ -365,7 +365,6 @@ CDI is needed to import virtual disk images in our KubeVirt cluster.
 ### Install the Operator
 
 ```sh
-kubectl apply -f https://github.com/kubevirt/kubevirt/releases/latest/download/kubevirt-operator.yaml
 kubectl apply -f https://github.com/kubevirt/containerized-data-importer/releases/latest/download/cdi-operator.yaml
 ```
 
